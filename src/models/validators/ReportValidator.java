@@ -17,11 +17,22 @@ public class ReportValidator {
         if(!content_error.equals("")){
             errors.add(content_error);
         }
+        String company_error=_validateCompany(r.getCompany());
+        if(!company_error.equals("")){
+            errors.add(company_error);
+        }
         return errors;
     }
     private static String _validateTitle(String title){
         if(title==null||title.equals("")){
             return "タイトルを入力してください";
+        }
+        return "";
+
+    }
+    private static String _validateCompany(String company){
+        if(company==null||company.equals("")){
+            return "取引先を入力してください";
         }
         return "";
 

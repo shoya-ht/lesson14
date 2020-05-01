@@ -140,3 +140,10 @@ pre{
 h3{
     font-size:larger;
 }
+nav ul li {
+  display: inline-block;
+  width: 100px;
+  background-color: skyblue;
+  text-align: center;
+  padding: 5px;
+}

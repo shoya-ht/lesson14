@@ -62,6 +62,17 @@ public class Report {
     @Column(name="updated_at",nullable=false)
     private Timestamp updated_at;
 
+    @Column(name="company",nullable=false)
+    private String company;
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
     public Integer getId() {
         return id;
     }
