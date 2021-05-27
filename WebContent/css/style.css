@@ -140,10 +140,10 @@ pre{
 h3{
     font-size:larger;
 }
-nav ul li {
+nav#topSelect ul li {
   display: inline-block;
-  width: 100px;
-  background-color: skyblue;
+  width: 30%;
+  background-color: #f0f8ff;
   text-align: center;
   padding: 5px;
 }

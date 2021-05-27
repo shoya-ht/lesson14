@@ -10,8 +10,7 @@
                 <c:out value="${flush}"></c:out>
             </div>
         </c:if>
-        <h2>日報管理システムへようこそ</h2>
-        <h3>【自分の日報 一覧】</h3>
+        <h2>社員番号:${e.id}の日報一覧</h2>
         <table id="report_list">
             <tbody>
                 <tr>
@@ -25,37 +24,14 @@
                                 value="${report.employee.name} " /></td>
                         <td class="report_date"><fmt:formatDate
                                 value='${report.report_date}' pattern='yyyy-MM-dd' /></td>
+
                         <td class="report_action"><a
-                            href="<c:url value='/reports/show?id=${report.id}'/>">詳細を見る</a></td>
+                            href="<c:url value='/reports/show?id=${report.id}'/>">詳細を見る</a>
+                            </td>
                     </tr>
                 </c:forEach>
             </tbody>
         </table>
-        <div id="pagination">
-            (全${reports_count}件)<br />
-            <c:forEach var="i" begin="1" end="${((reports_count-1)/15)+1}"
-                step="1">
-                <c:choose>
-                    <c:when test="${i==page}">
-                        <c:out value="${i}" />&nbsp;
-</c:when>
-                    <c:otherwise>
-                        <a href="<c:url value='/reports/index?page=${i}'/>"><c:out
-                                value="${i}" /></a>&nbsp;
-</c:otherwise>
-                </c:choose>
-            </c:forEach>
-        </div>
-        <c:choose>
-            <c:when test="${report ==null }">
-                <p>
-                    <a href="<c:url value='/reports/new'/>">新規日報の登録</a>
-                </p>
-            </c:when>
-        </c:choose>
-        <p>
-            <a href="<c:url value='/reports/showother'/>">全従業員の日報</a>
-        </p>
 
     </c:param>
 </c:import>

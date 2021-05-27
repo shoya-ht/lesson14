@@ -22,7 +22,7 @@ import javax.persistence.Table;
             query="SELECT r FROM Report AS r ORDER BY r.id DESC"
             ),
 @NamedQuery(
-        name="getReportsCount",
+        name="getAllReportsCount",
         query="SELECT COUNT(r) FROM Report AS r"
         ),
 @NamedQuery(
@@ -32,6 +32,14 @@ import javax.persistence.Table;
     @NamedQuery(
             name="getMyReportsCount",
             query="SELECT COUNT(r) FROM Report AS r WHERE r.employee=:employee"
+            ),
+    @NamedQuery(
+            name="getMyTodayReport",
+            query="SELECT r FROM Report AS r WHERE r.employee=:employee AND r.report_date=:workDay"
+            ),
+    @NamedQuery(
+            name="getMyLastReport",
+            query="SELECT r FROM Report AS r WHERE r.employee=:employee AND r.report_date <>:workingDay ORDER BY r.id DESC "
             )
 })
 @Entity
@@ -49,9 +57,6 @@ public class Report {
     @Column(name="report_date",nullable=false)
     private Date report_date;
 
-    @Column(name="title",length=255,nullable=false)
-    private String title;
-
     @Lob
     @Column(name="content",nullable=false)
     private String content;
@@ -64,6 +69,19 @@ public class Report {
 
     @Column(name="company",nullable=false)
     private String company;
+
+    @Column(name="plan",nullable=false)
+    private String plan;
+
+
+
+    public String getPlan() {
+        return plan;
+    }
+
+    public void setPlan(String plan) {
+        this.plan = plan;
+    }
 
     public String getCompany() {
         return company;
@@ -95,14 +113,6 @@ public class Report {
 
     public void setReport_date(Date report_date) {
         this.report_date = report_date;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getContent() {

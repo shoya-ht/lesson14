@@ -14,24 +14,18 @@ import javax.servlet.http.HttpServletResponse;
 import models.Report;
 import utils.DBUtil;
 
-/**
- * Servlet implementation class ReportsShowOther
- */
+
 @WebServlet("/reports/showother")
 public class ReportsShowOther extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public ReportsShowOther() {
         super();
-        // TODO Auto-generated constructor stub
+
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         EntityManager em=DBUtil.createEntityManager();
 
@@ -47,7 +41,7 @@ public class ReportsShowOther extends HttpServlet {
                 .setMaxResults(15)
                 .getResultList();
 
-        long reports_count=(long)em.createNamedQuery("getReportsCount",Long.class)
+        long reports_count=(long)em.createNamedQuery("getAllReportsCount",Long.class)
                 .getSingleResult();
         em.close();
 

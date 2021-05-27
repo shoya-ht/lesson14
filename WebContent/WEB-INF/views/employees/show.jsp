@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>"
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <c:import url="/WEB-INF/views/layout/app.jsp">
     <c:param name="content">
         <c:choose>
             <c:when test="${employee !=null}">
-                <h2>id:${employee.id }の従業員情報 詳細ページ</h2>
+                <h2>社員番号:${employee.code}の従業員情報 詳細ページ</h2>
 
 
 
@@ -42,12 +42,26 @@
                         </tr>
                     </tbody>
                 </table>
-                <c:when e.admin_flag<="${employee.admin_flag}">>
 
-                    <p>
-                        <a href="<c:url value='/employees/edit?id=${employee.id}'/>">この従業員情報を編集する</a>
-                    </p>
-                </c:when>
+
+                <p>
+                    <a href="<c:url value='/employees/edit?id=${employee.id}'/>">この従業員情報を編集する</a>
+                </p>
+                <p>
+                    <a href="#" onclick="confirmDestroy();">この従業員を削除する</a>
+                </p>
+                <form method="POST"
+                    action="${pageContext.request.contextPath}/employees/destroy?id=${employee.id}">
+                    <input type="hidden" name="_token" value="${_token}" />
+                </form>
+                <script>
+                    function confirmDestroy() {
+                        if (confirm("本当に削除してよろしいですか？")) {
+                            document.forms[0].submit();
+                        }
+                    }
+                </script>
+
             </c:when>
             <c:otherwise>
                 <h2>お探しのデータは見つかりませんでした</h2>

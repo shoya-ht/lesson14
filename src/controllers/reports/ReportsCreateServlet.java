@@ -25,20 +25,14 @@ import utils.DBUtil;
 public class ReportsCreateServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+
     public ReportsCreateServlet() {
         super();
-        // TODO Auto-generated constructor stub
+
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // TODO Auto-generated method stub
         String _token = (String) request.getParameter("_token");
         if (_token != null && _token.equals(request.getSession().getId())) {
             EntityManager em = DBUtil.createEntityManager();
@@ -47,15 +41,16 @@ public class ReportsCreateServlet extends HttpServlet {
 
             r.setEmployee((Employee) request.getSession().getAttribute("login_employee"));
             Date report_date = new Date(System.currentTimeMillis());
+
             String rd_str = request.getParameter("report_date");
             if (rd_str != null && !rd_str.equals("")) {
                 report_date = Date.valueOf(request.getParameter("report_date"));
             }
             r.setReport_date(report_date);
-
-            r.setTitle(request.getParameter("title"));
-            r.setCompany(request.getParameter("company"));
             r.setContent(request.getParameter("content"));
+            r.setCompany(request.getParameter("company"));
+            r.setPlan(request.getParameter("plan"));
+
 
             Timestamp currentTime = new Timestamp(System.currentTimeMillis());
             r.setCreated_at(currentTime);

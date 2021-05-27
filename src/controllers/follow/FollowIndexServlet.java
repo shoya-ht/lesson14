@@ -1,9 +1,10 @@
-package controllers.employees;
+package controllers.follow;
 
 import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,16 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Employee;
+import models.Follow;
 import utils.DBUtil;
 
-/**
- * Servlet implementation class EmployeesIndexServlet
- */
-@WebServlet("/employees/index")
-public class EmployeesIndexServlet extends HttpServlet {
+@WebServlet("/follow/index")
+public class FollowIndexServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    public EmployeesIndexServlet() {
+    public FollowIndexServlet() {
         super();
     }
 
@@ -29,32 +28,30 @@ public class EmployeesIndexServlet extends HttpServlet {
             throws ServletException, IOException {
 
         EntityManager em = DBUtil.createEntityManager();
-        int page = 1;
-        try {
-            page = Integer.parseInt(request.getParameter("page"));
-        } catch (NumberFormatException e) {
-        }
+
+        //従業員リスト取得
+        Employee login_employee = (Employee) request.getSession().getAttribute("login_employee");
         List<Employee> employees = em.createNamedQuery("getAllEmployees", Employee.class)
-                .setFirstResult(15 * (page - 1))
-                .setMaxResults(15)
                 .getResultList();
-        long employees_count = (long) em.createNamedQuery("getEmployeesCount", Long.class)
-                .getSingleResult();
+        request.setAttribute("employees", employees);
 
-    //    Employee me=em.find(Employee.class,Integer.parseInt(request.getParameter("id")));
-
+        try {
+            //フォローリスト取得
+            List<Follow> follows = em.createNamedQuery("getMyAllFollows", Follow.class)
+                    .setParameter("emp", login_employee)
+                    .getResultList();
+            request.getSession().setAttribute("follows", follows);
+        } catch (NoResultException e) {
+            request.getSession().setAttribute("follows", null);
+            request.getSession().setAttribute("flush", "従業員がフォローされていません");
+        }
         em.close();
 
-        request.setAttribute("employees", employees);
-        request.setAttribute("employees_count", employees_count);
-        request.setAttribute("page", page);
-       // request.setAttribute("me", me);
         if (request.getSession().getAttribute("flush") != null) {
             request.setAttribute("flush", request.getSession().getAttribute("flush"));
             request.getSession().removeAttribute("flush");
         }
-
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/employees/index.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/follows/index.jsp");
         rd.forward(request, response);
     }
 }

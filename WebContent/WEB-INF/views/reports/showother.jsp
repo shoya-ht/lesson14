@@ -14,26 +14,26 @@
         <table id="employee_artc">
             <tbody>
                 <tr>
-                    <th>社員番号</th>
+
                     <th>氏名</th>
                     <th>日付</th>
-                    <th>タイトル</th>
                     <th>操作</th>
                 </tr>
-                <!-- 1件ごとに表示 1行目不明 -->
-                <c:forEach var="id" items="${reports}" varStatus="status">
-                        <td><c:out value="${id.code}" /></td>
-                        <td><c:out value="${id.name}" /></td>
-                        <td><c:out value="${id.title}" /></td>
-                        <td><c:out value="${id.name}" /></td>
-                        <a href="<c:url value='/reports/show?id=${reports.id}'/>">詳細を表示</a>
+                <c:forEach var="report" items="${reports}" varStatus="status">
+                    <tr class="row${status.count %2 }">
+
+                        <td class="report_name">${report.employee.name}</td>
+                        <td class="report_date"><fmt:formatDate
+                                value='${report.report_date}' pattern='yyyy-MM-dd' /></td>
+                        <td class="report_action"><a href="<c:url value='/reports/showother/detail?id=${report.id}'/>">詳細を見る</a></td>
+                    </tr>
                 </c:forEach>
             </tbody>
         </table>
         <div id="pagination">
-        <!-- 1行目不明 -->
-            (全${employees_count}件 )<br />
-            <c:forEach var="i" begin="1" end="${((employees_count-1)/15)+1 }"
+            <!-- 1行目不明 -->
+            (全${reports_count}件 )<br />
+            <c:forEach var="i" begin="1" end="${((reports_count-1)/15)+1 }"
                 step="1">
                 <c:choose>
                     <c:when test="${i==page }">
